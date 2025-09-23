@@ -5,7 +5,9 @@ const router = express.Router();
 
 // POST /api/contact
 router.post("/", async (req, res) => {
+  
   const { name, email, message } = req.body;
+  console.log(req.body);
 
   try {
     // configure transporter with your Gmail

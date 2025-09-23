@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";   // ✅ import Link
 import { X, Menu } from "lucide-react";
+import Login from "./Login";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,9 +50,10 @@ export default function Navbar() {
 
         {/* Right: Sign Up + Hamburger */}
         <div className="flex items-center space-x-4">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+          {/* <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
             Sign Up
-          </button>
+          </button> */}
+          <Login/>
           <button className="md:hidden text-gray-700" onClick={() => setIsOpen(true)}>
             <Menu size={28} />
           </button>
