@@ -1,26 +1,29 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/navbar";
-import Contact from "./pages/Contact"; 
-// import Home from "./Home";
-// import Service from "./Service";
-// import About from "./About";
-import './App.css'
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Service from "./pages/Service";
+import Contact from "./pages/Contact";
+import About from "./pages/About";
+import NotFound from "./components/NotFound";
 
 function App() {
-
   return (
     <Router>
       <Navbar />
-      <div className="pt-20"> {/* padding so content is not hidden behind navbar */}
+      {/* Padding = Navbar height (h-20 = 5rem) */}
+      <div className="pt-20 min-h-screen">
         <Routes>
-          {/* <Route path="/" element={<Home />} />
-          <Route path="/service" element={<Service />} /> */}
+          <Route path="/" element={<Home />} />
+          <Route path="/service" element={<Service />} />
           <Route path="/contact" element={<Contact />} />
-          {/* <Route path="/about" element={<About />} /> */}
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      <Footer />
     </Router>
-  )}
+  );
+}
 
-
-export default App
+export default App;

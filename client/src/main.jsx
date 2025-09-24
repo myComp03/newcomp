@@ -19,6 +19,5 @@ createRoot(document.getElementById("root")).render(
         <App />
       </UserProvider>
     </Auth0Provider>
-    ,
   </StrictMode>
 );

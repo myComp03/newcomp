@@ -12,9 +12,9 @@ function Login() {
         {isAuthenticated ? (
           <div className="relative">
             <img
-              src={dbUser?.userImg}
+              src={dbUser?.picture}
               alt={dbUser?.name}
-              className="w-10 h-10 rounded-full cursor-pointer border-2 border-purple-500"
+              className="w-10 h-10 p-[2px] rounded-full bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 inline-block cursor-pointer transition-transform duration-300 hover:scale-110 hover:shadow-lg"
               onClick={() => setMenuOpen(!menuOpen)}
             />
             {menuOpen && (
@@ -35,7 +35,7 @@ function Login() {
         ) : (
           <button
             onClick={loginWithRedirect}
-            className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500"
           >
             Login
           </button>

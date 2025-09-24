@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema(
   {
     email: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    userImg: { type: String },
+    picture: { type: String },
   },
   { timestamps: true } // 👈 yeh hona MUST hai
 );

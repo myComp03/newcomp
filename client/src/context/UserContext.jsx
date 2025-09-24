@@ -14,6 +14,8 @@ export const UserProvider = ({ children }) => {
   } = useAuth0();
   const [dbUser, setDbUser] = useState(null);
 
+  const baseUrl="http://localhost:8000";
+
   useEffect(() => {
     const saveUserToDB = async () => {
       if (isAuthenticated && user) {
@@ -24,12 +26,11 @@ export const UserProvider = ({ children }) => {
           });
 
           const res = await axios.post(
-            "http://localhost:8000/api/users/save",
-            { email: user.email, name: user.name, userImg: user.userImg },
+            `${baseUrl}/api/users/save`,
+            { email: user.email, name: user.name, picture: user.picture },
             { headers: { Authorization: `Bearer ${token}` } }
           );
           // console.log(token);
-
           setDbUser(res.data);
         } catch (err) {
           console.error("Error saving user:", err);

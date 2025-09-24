@@ -16,9 +16,6 @@ app.use(
   })
 );
 
-// for mailing 
-app.use("/api/contact", contactRoutes);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -27,6 +24,9 @@ app.use(cors());
 const port = process.env.PORT || 5000;
 
 app.use("/api/users", userRoute);
+
+// for mailing 
+app.use("/api/contact", contactRoutes);
 
 
 connectDB()

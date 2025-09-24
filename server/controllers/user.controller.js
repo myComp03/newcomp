@@ -4,11 +4,11 @@ export const saveUser = async (req, res) => {
   try {
     console.log("Incoming body:", req.body);
 
-    const { email, name, userImg } = req.body;
+    const { email, name, picture } = req.body;
     let user = await User.findOne({ email });
 
     if (!user) {
-      user = await User.create({ email, name, userImg });
+      user = await User.create({ email, name, picture });
       console.log("New user created:", user);
     } else {
       console.log("User already exists:", user);

@@ -1,7 +1,6 @@
 import express from "express";
 import jwtCheck from "../middlewares/auth0.js";
-import { saveUser } from "../controllers/user.controller2.js";
-// import jwtCheck from "../middlewares/auth0.js";
+import { saveUser } from "../controllers/user.controller.js";
 
 const userRoute = express.Router();
 
