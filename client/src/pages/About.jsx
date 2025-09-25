@@ -156,7 +156,7 @@ export default function About() {
           help you achieve your goals.
         </p>
         <a
-          href="/contact"
+          href="/Contact"
           className="bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-300"
         >
           Contact Us
