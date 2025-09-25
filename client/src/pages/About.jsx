@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import Contact from "./Contact";
+import { Link } from "react-router-dom";
 
 export default function About() {
   const sectionVariants = {
@@ -108,7 +110,7 @@ export default function About() {
       </div>
 
       {/* Stats / Achievements */}
-      <div className="py-16 px-6 md:px-20 bg-gray-100">
+      {/* <div className="py-16 px-6 md:px-20 bg-gray-100">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -135,6 +137,85 @@ export default function About() {
             </motion.div>
           ))}
         </div>
+      </div> */}
+
+      {/* Founders Section */}
+      <div className="py-16 px-6 md:px-20 bg-gray-50">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-3xl md:text-4xl font-bold mb-12 text-center text-blue-600"
+        >
+          Meet Our Founders
+        </motion.h2>
+
+        <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          {[
+            {
+              name: "Raju Kumar",
+              skill: "AI/ML Engineer",
+              img: "https://static.vecteezy.com/system/resources/thumbnails/000/439/863/small_2x/Basic_Ui__28186_29.jpg",
+              about:
+                "Amit specializes in machine learning algorithms and predictive modeling for business solutions.",
+              color: "from-green-400 to-blue-500",
+            },
+            {
+              name: "Shubham Vats Jha",
+              skill: "UI/UX Designer",
+              img: "https://static.vecteezy.com/system/resources/thumbnails/000/439/863/small_2x/Basic_Ui__28186_29.jpg",
+              about:
+                "Priya designs intuitive and beautiful user interfaces that enhance user experience across platforms.",
+              color: "from-yellow-400 to-orange-500",
+            },
+
+            {
+              name: "Randhir Singh Randhawa",
+              skill: "Cloud Architect",
+              img: "https://static.vecteezy.com/system/resources/thumbnails/000/439/863/small_2x/Basic_Ui__28186_29.jpg",
+              about:
+                "Rahul is an expert in cloud infrastructure and scalable backend solutions for modern applications.",
+              color: "from-blue-400 to-indigo-500",
+            },
+            {
+              name: "Suyash Tripathi",
+              skill: "MERN Developer",
+              img: "https://static.vecteezy.com/system/resources/thumbnails/000/439/863/small_2x/Basic_Ui__28186_29.jpg",
+              about:
+                "Yash is a full-stack MERN developer with expertise in AI/ML solutions and modern web apps.",
+              color: "from-pink-400 to-purple-500",
+            },
+          ].map((founder, i) => (
+            <div
+              key={i}
+              className="relative group bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer"
+            >
+              {/* Profile Image */}
+              <img
+                src={founder.img}
+                alt={founder.name}
+                className="w-full h-72 object-cover rounded-t-xl transform group-hover:scale-105 transition-transform duration-500"
+              />
+
+              {/* Name & Skill */}
+              <div className="p-4 text-center">
+                <h3 className="text-xl font-bold text-gray-800">
+                  {founder.name}
+                </h3>
+                <p className="text-gray-500 font-medium">{founder.skill}</p>
+              </div>
+
+              {/* Hover About Card */}
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${founder.color} text-white p-6 flex items-center justify-center text-center 
+            transform -translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-95 transition-all duration-500`}
+              >
+                <p className="text-sm md:text-base">{founder.about}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Call To Action */}
@@ -142,11 +223,13 @@ export default function About() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white py-20 px-6 text-center relative overflow-hidden"
+        className="bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white py-28 md:py-20 px-6 text-center relative overflow-hidden"
       >
-        {/* Animated circles */}
-        <div className="absolute -top-16 -left-16 w-72 h-72 bg-white opacity-10 rounded-full animate-ping"></div>
-        <div className="absolute -bottom-20 -right-16 w-96 h-96 bg-white opacity-10 rounded-full animate-pulse"></div>
+        {/* Top-left circle */}
+        <div className="absolute -top-16 -left-16 w-36 sm:w-40 md:w-72 md:h-72 h-36 sm:h-40 bg-white opacity-10 rounded-full animate-ping"></div>
+
+        {/* Bottom-right circle */}
+        <div className="absolute bottom-[-50px] right-[-30px] w-52 sm:w-60 md:w-96 md:h-96 h-52 sm:h-60 bg-white opacity-10 rounded-full animate-pulse"></div>
 
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Ready to Transform Your Business?
@@ -155,12 +238,12 @@ export default function About() {
           Connect with our experts today and discover how our IT solutions can
           help you achieve your goals.
         </p>
-        <a
-          href="/Contact"
-          className="bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-300"
+        <Link
+          to="/contact"
+          className=" mx-auto bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-300 mt-6"
         >
           Contact Us
-        </a>
+        </Link>
       </motion.div>
     </div>
   );

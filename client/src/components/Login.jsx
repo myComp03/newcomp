@@ -11,12 +11,19 @@ function Login() {
       <div className="flex items-center gap-4 relative">
         {isAuthenticated ? (
           <div className="relative">
-            <img
-              src={dbUser?.picture}
-              alt={dbUser?.name}
-              className="w-10 h-10 p-[2px] rounded-full bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 inline-block cursor-pointer transition-transform duration-300 hover:scale-110 hover:shadow-lg"
+            <div
               onClick={() => setMenuOpen(!menuOpen)}
-            />
+              className="w-12 h-12 p-[2px] rounded-full bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 cursor-pointer transition-transform duration-300 hover:scale-110 hover:shadow-lg flex items-center justify-center"
+            >
+              <div className="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center">
+                <img
+                  src={dbUser?.picture}
+                  alt={dbUser?.name || "User"}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+
             {menuOpen && (
               <div className="absolute mt-2 right-0 w-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden z-50">
                 <button

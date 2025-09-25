@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import Service from "./pages/Service";
+import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import NotFound from "./components/NotFound";
@@ -15,7 +15,7 @@ function App() {
       <div className="pt-20 min-h-screen">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/service" element={<Service />} />
+          <Route path="/service" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />

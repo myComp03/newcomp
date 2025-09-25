@@ -1,6 +1,26 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  LayersControl,
+} from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
+// Fix Leaflet default icon
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+});
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -9,169 +29,185 @@ export default function Contact() {
     message: "",
   });
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(null);
-  const [error, setError] = useState(null);
+  const [responseMsg, setResponseMsg] = useState("");
+  const [error, setError] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setSuccess(null);
-    setError(null);
+    setResponseMsg("");
+    setError(false);
     try {
       await axios.post("http://localhost:8000/api/contact", formData);
-      setSuccess("Message sent successfully!");
+      setResponseMsg("Message sent successfully!");
       setFormData({ name: "", email: "", message: "" });
     } catch (err) {
-      setError("Something went wrong. Try again!");
-    } finally {
-      setLoading(false);
+      console.error(err);
+      setResponseMsg("Something went wrong. Try again!");
+      setError(true);
     }
+    setLoading(false);
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
-  // 🔹 Custom Location for map
-  const customLocation = {
-    lat: 28.6139, // Delhi latitude
-    lng: 77.209, // Delhi longitude
-    zoom: 15,
-  };
-
-  // Normal Google Maps embed without API key
-  const mapSrc = `https://www.google.com/maps?q=${customLocation.lat},${customLocation.lng}&z=${customLocation.zoom}&output=embed`;
+  const position = [28.615, 77.212]; // Custom coordinates
 
   return (
-    <div className="flex flex-col">
-      {/* Contact Form Section */}
-      <div className="min-h-screen relative flex items-center justify-center p-4 bg-gray-100 overflow-hidden">
-        {/* Side circles */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-          <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full opacity-20 animate-pulse bg-blue-300"></div>
-          <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full opacity-20 animate-pulse bg-pink-200"></div>
-        </div>
+    <div className="flex flex-col bg-gray-50">
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white py-28 px-6 md:px-20 text-center relative overflow-hidden">
+        <div className="absolute -top-20 -left-20 w-72 h-72 bg-white opacity-10 rounded-full animate-ping"></div>
+        <div className="absolute -bottom-24 -right-16 w-96 h-96 bg-white opacity-10 rounded-full animate-pulse"></div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="relative w-full max-w-3xl bg-white text-gray-800 rounded-xl shadow-lg p-8 md:p-12 z-10"
+        <motion.h1
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-5xl md:text-6xl font-bold mb-4"
         >
-          <h2 className="text-3xl font-bold mb-6 text-center">Contact Us</h2>
-          {success && (
-            <p className="text-green-600 mb-4 text-center">{success}</p>
-          )}
-          {error && <p className="text-red-600 mb-4 text-center">{error}</p>}
-
-          <motion.form
-            onSubmit={handleSubmit}
-            initial="hidden"
-            animate="visible"
-            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-            className="space-y-6"
-          >
-            <motion.div variants={itemVariants} className="flex flex-col">
-              <label className="mb-1 font-medium">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Your Name"
-                className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white border-gray-300 text-gray-800"
-                required
-              />
-            </motion.div>
-
-            <motion.div variants={itemVariants} className="flex flex-col">
-              <label className="mb-1 font-medium">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Your Email"
-                className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white border-gray-300 text-gray-800"
-                required
-              />
-            </motion.div>
-
-            <motion.div variants={itemVariants} className="flex flex-col">
-              <label className="mb-1 font-medium">Message</label>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Your Message"
-                className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white border-gray-300 text-gray-800"
-                rows="5"
-                required
-              />
-            </motion.div>
-
-            <motion.button
-              type="submit"
-              variants={itemVariants}
-              disabled={loading}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold transition-colors duration-300"
-            >
-              {loading ? "Sending..." : "Send Message"}
-            </motion.button>
-          </motion.form>
-        </motion.div>
+          Contact Us
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          className="text-lg md:text-xl max-w-2xl mx-auto"
+        >
+          Have questions or want to work with us? Get in touch today.
+        </motion.p>
       </div>
 
-      {/* Contact Info + Map Section */}
-      <div className="w-full mt-12 px-4 md:px-20 py-16 bg-gray-50">
-        <div className="flex flex-col md:flex-row gap-10 items-start md:items-stretch">
-          {/* Contact Details */}
-          <div className="flex-1 space-y-6 text-gray-800">
-            <h2 className="text-3xl font-bold mb-4">Contact Info</h2>
-            <div className="space-y-4">
-              <p className="flex items-center gap-3 hover:text-blue-500 transition-colors duration-300 cursor-pointer">
-                <span className="text-blue-500 text-xl">📍</span> 123 Street,
-                City, Country
-              </p>
-              <p className="flex items-center gap-3 hover:text-blue-500 transition-colors duration-300">
-                <span className="text-blue-500 text-xl">📞</span>
-                <a
-                  href="tel:+911234567890"
-                  className="underline hover:text-blue-700"
-                >
-                  +91 1234567890
-                </a>
-              </p>
-              <p className="flex items-center gap-3 hover:text-blue-500 transition-colors duration-300">
-                <span className="text-blue-500 text-xl">✉️</span>
-                <a
-                  href="mailto:contact@company.com"
-                  className="underline hover:text-blue-700"
-                >
-                  contact@company.com
-                </a>
-              </p>
-            </div>
-          </div>
+      {/* Contact Form */}
+      <motion.form
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-xl shadow-lg space-y-6 max-w-3xl w-full mx-auto -mt-16 relative z-10"
+      >
+        <div>
+          <label className="block text-gray-700 font-medium mb-2">Name</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-700 font-medium mb-2">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-700 font-medium mb-2">
+            Message
+          </label>
+          <textarea
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            rows="5"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className={`w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold py-3 rounded-lg hover:opacity-90 transition-all duration-300 ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          {loading ? "Sending..." : "Send Message"}
+        </button>
+        {responseMsg && (
+          <p
+            className={`mt-2 text-center font-medium ${
+              error ? "text-red-600" : "text-green-600"
+            }`}
+          >
+            {responseMsg}
+          </p>
+        )}
+      </motion.form>
 
-          {/* Map */}
-          <div className="flex-1 h-80 w-full overflow-hidden rounded-xl shadow-lg border border-gray-200">
-            <iframe
-              title="Company Location"
-              src={mapSrc}
-              width="100%"
-              height="100%"
-              className="transform transition-transform duration-300 hover:scale-105"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
+      {/* Compact Interactive Map */}
+      <div className="my-16 flex justify-center">
+        <div className="w-full max-w-6xl h-[350px] rounded-xl overflow-hidden shadow-lg">
+          <MapContainer
+            center={position}
+            zoom={13}
+            scrollWheelZoom={true}
+            style={{ height: "100%", width: "100%" }}
+          >
+            <LayersControl position="topright">
+              <LayersControl.BaseLayer checked name="Street Map">
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+              </LayersControl.BaseLayer>
+              <LayersControl.BaseLayer name="Dark Map">
+                <TileLayer
+                  url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                  attribution='&copy; <a href="https://carto.com/">CARTO</a> contributors'
+                />
+              </LayersControl.BaseLayer>
+            </LayersControl>
+            <Marker position={position}>
+              <Popup>Our Office Location</Popup>
+            </Marker>
+          </MapContainer>
+        </div>
+      </div>
+
+      {/* Get in Touch Section */}
+      <div className="py-20 px-6 md:px-20 max-w-6xl mx-auto text-center space-y-8">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-3xl font-bold text-blue-600"
+        >
+          Get in Touch
+        </motion.h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Whether you have a project in mind or just want to say hello, we’re
+          here to listen. Reach out via email or phone and we’ll respond
+          quickly.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-12 mt-8">
+          <div>
+            <p className="text-lg font-semibold">📧 Email</p>
+            <a
+              href="mailto:suyatripath03@gmail.com"
+              className="text-blue-600 hover:underline"
+            >
+              suyatripath03@gmail.com
+            </a>
+          </div>
+          <div>
+            <p className="text-lg font-semibold">📞 Phone</p>
+            <a
+              href="tel:+919876543210"
+              className="text-blue-600 hover:underline"
+            >
+              +91 98765 43210
+            </a>
           </div>
         </div>
       </div>
