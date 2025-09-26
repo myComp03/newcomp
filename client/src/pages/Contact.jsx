@@ -1,3 +1,4 @@
+// src/pages/Contact.jsx
 import { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -10,6 +11,8 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import HeroSection from "../components/HeroSection";
+import Navbar from "../components/Navbar"; // Ensure you have Navbar component
 
 // Fix Leaflet default icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -55,29 +58,17 @@ export default function Contact() {
   const position = [28.615, 77.212]; // Custom coordinates
 
   return (
-    <div className="flex flex-col bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white py-28 px-6 md:px-20 text-center relative overflow-hidden">
-        <div className="absolute -top-20 -left-20 w-72 h-72 bg-white opacity-10 rounded-full animate-ping"></div>
-        <div className="absolute -bottom-24 -right-16 w-96 h-96 bg-white opacity-10 rounded-full animate-pulse"></div>
+    <div className="relative">
+      {/* Navbar */}
+      <Navbar />
 
-        <motion.h1
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-5xl md:text-6xl font-bold mb-4"
-        >
-          Contact Us
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          className="text-lg md:text-xl max-w-2xl mx-auto"
-        >
-          Have questions or want to work with us? Get in touch today.
-        </motion.p>
-      </div>
+      {/* Hero Section */}
+      <HeroSection
+        title="Contact Us"
+        subtitle="Have a project in mind or just want to say hi? We’d love to hear from you. Let’s connect and make ideas happen together."
+        primaryBtn={{ text: "Our Services", link: "/service" }}
+        secondaryBtn={{ text: "About Us", link: "/about" }}
+      />
 
       {/* Contact Form */}
       <motion.form
@@ -143,9 +134,9 @@ export default function Contact() {
         )}
       </motion.form>
 
-      {/* Compact Interactive Map */}
-      <div className="my-16 flex justify-center">
-        <div className="w-full max-w-6xl h-[350px] rounded-xl overflow-hidden shadow-lg">
+      {/* Interactive Map */}
+      <div className="my-16 flex justify-center relative z-0">
+        <div className="w-full max-w-6xl h-[400px] rounded-xl overflow-hidden shadow-lg">
           <MapContainer
             center={position}
             zoom={13}
@@ -159,10 +150,12 @@ export default function Contact() {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
               </LayersControl.BaseLayer>
-              <LayersControl.BaseLayer name="Dark Map">
+
+              {/* Satellite Map */}
+              <LayersControl.BaseLayer name="Satellite Map">
                 <TileLayer
-                  url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                  attribution='&copy; <a href="https://carto.com/">CARTO</a> contributors'
+                  url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                  attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye"
                 />
               </LayersControl.BaseLayer>
             </LayersControl>

@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "express-oauth2-jwt-bearer": "^1.7.1",
-    "framer-motion": "^12.23.19",
-    "react-icons": "^4.10.0"
-  }
-}

@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import HeroSection from "../components/HeroSection";
+import CTASection from "../components/CTASection";
 
 export default function Services() {
   const services = [
@@ -65,28 +67,10 @@ export default function Services() {
   return (
     <div className="flex flex-col bg-gray-50">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white py-28 px-6 md:px-20 text-center relative overflow-hidden">
-        <div className="absolute -top-20 -left-20 w-72 h-72 bg-white opacity-10 rounded-full animate-ping"></div>
-        <div className="absolute -bottom-24 -right-16 w-96 h-96 bg-white opacity-10 rounded-full animate-pulse"></div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-5xl md:text-6xl font-bold mb-4"
-        >
-          Our Services
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          className="text-lg md:text-xl max-w-2xl mx-auto"
-        >
-          From web to mobile, cloud to cybersecurity – we deliver comprehensive
-          IT solutions that empower your business.
-        </motion.p>
-      </div>
+      <HeroSection
+        title="Our Services"
+        subtitle="From web to mobile, cloud to cybersecurity – we deliver comprehensive IT solutions that empower your business."
+      />
 
       {/* Services Grid */}
       <div className="py-20 px-6 md:px-20">
@@ -142,26 +126,11 @@ export default function Services() {
       </div>
 
       {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white py-20 px-6 text-center relative overflow-hidden"
-      >
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Let’s Build Something Amazing Together 🚀
-        </h2>
-        <p className="mb-6 text-lg max-w-2xl mx-auto">
-          Partner with us to design, develop, and deploy IT solutions that make
-          an impact.
-        </p>
-        <a
-          href="/contact"
-          className="bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-300 mt-6"
-        >
-          Get Started
-        </a>
-      </motion.div>
+      <CTASection
+        title="Let’s Build Something Amazing Together 🚀"
+        desc="Partner with us to design, develop, and deploy IT solutions that make an impact."
+        button={{ text: "Get Started", link: "/contact" }}
+      />
     </div>
   );
 }
